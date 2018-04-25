@@ -25,7 +25,7 @@ class Wxapi {
         return json_decode($wx_auth_ret);
     }
 
-    public static function get_access_token($code) {    
+    public static function get_access_token() {    
         $url = 'https://api.weixin.qq.com/cgi-bin/token?';
         $postString = array(
             "grant_type" => "client_credential",
