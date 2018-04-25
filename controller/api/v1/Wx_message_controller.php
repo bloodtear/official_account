@@ -35,7 +35,7 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
                         )
                     );
                     
-                    $json = json_decode(json_encode($arr))
+                    $json = json_decode(json_encode($arr));
                     
                     $ret2 = app\Customer_service::send_msg("text", $json);
                 }
