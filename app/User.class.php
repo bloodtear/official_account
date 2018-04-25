@@ -21,6 +21,12 @@ class User {
                 "privilege" => ""
             );
         }
+        if (empty($summary['id'])) {
+            $summary['id'] = 0;
+        }
+        if (empty($summary['status'])) {
+            $summary['status'] = 0;
+        }
         $this->mSummary = $summary;
     }
 
@@ -103,12 +109,12 @@ class User {
     public function save() {
         $id = $this->id();
         if ($id == 0) {
-            $id = database\Db_user::inst()->add($this->openid(), $this->unionid(), $this->status(), $this->nickname(), $this->sex(), $this->province(), $this->city(), $this->country(), $this->headimgurl(), $this->privilege());
+            $id = database\Db_user::inst()->add($this->openid(), $this->unionid(), $this->status(), $this->nickname(), $this->sex(), $this->province(), $this->city(), $this->country(), $this->headimgurl(), json_encode($this->privilege()));
             if ($id !== false) {
                 $this->mSummary["id"] = $id;
             }
         } else {
-            $id = database\Db_user::inst()->modify($id, $this->openid(), $this->unionid(), $this->status(), $this->nickname(), $this->sex(), $this->province(), $this->city(), $this->country(), $this->headimgurl(), $this->privilege());
+            $id = database\Db_user::inst()->modify($id, $this->openid(), $this->unionid(), $this->status(), $this->nickname(), $this->sex(), $this->province(), $this->city(), $this->country(), $this->headimgurl(), json_encode($this->privilege()));
         }
         return $id;
     }
