@@ -19,6 +19,19 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
         $input = simplexml_load_string(file_get_contents('php://input'), null, LIBXML_NOCDATA);
         \framework\Logging::l("input", json_encode($input));
         
+        switch ($input->MsgType) {
+            case 'event':
+                if ($input->Event == 'subscribe') {
+                    $ret = app\User::subscribe($input->FromUserName);
+                }
+            break;
+            
+            default:
+            
+            break;
+            
+        }
+        
         return '';
     }
         

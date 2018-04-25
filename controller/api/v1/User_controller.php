@@ -2,6 +2,7 @@
 namespace official_account\controller\api\v1;
 use official_account\app;
 
+// 弃用此controller, 改用Wx_message_controller
 class User_controller extends \official_account\controller\api\v1_base {
     public function preaction($action) {
     }

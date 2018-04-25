@@ -134,6 +134,44 @@ class User {
         );
     }
     
+    public static function subscribe($openid) {
+        
+        
+        $access_token_ret = app\Wxapi::get_access_token($code);
+        \framework\Logging::l("access_token_ret", json_encode($access_token_ret));
+        if (isset($access_token_ret->errcode)) {
+            return false;
+        }
+        
+        $token = $access_token_ret->access_token;
+        $openid = $access_token_ret->openid;
+        
+        $userinfo = app\Wxapi::get_userinfo($token, $openid);
+        \framework\Logging::l("userinfo", json_encode($userinfo));
+        if (isset($userinfo->errcode)) {
+            return false;
+        }
+        
+        $userinfo = json_decode(json_encode($userinfo), true);
+        
+        $user = app\User::getByOpenId($openid);
+        if (empty($user)) {
+            $user = new app\User($userinfo);
+        }
+        
+        $user->setNickName($userinfo['nickname']);
+        $user->setSex($userinfo['sex']);
+        $user->setProvince($userinfo['province']);
+        $user->setCity($userinfo['city']);
+        $user->setCountry($userinfo['country']);
+        $user->setHeadImgUrl($userinfo['headimgurl']);
+        $user->setPrivilege($userinfo['privilege']);
+        
+        $save = $user->save();
+        return $save;
+        
+    }
+    
     public static function getByOpenId($openid) {
         $data = database\Db_user::inst()->getByOpenId($openid);
         if (empty($data)) {

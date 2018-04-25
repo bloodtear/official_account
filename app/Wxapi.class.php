@@ -6,6 +6,16 @@ use official_account\database;
 class Wxapi {
     
     public static function get_userinfo($token, $openid){
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?';
+        $postString = array(
+            "access_token" => $token,
+            "openid" => $openid,
+            "lang" => "zh_CN");
+        $wx_auth_ret = comm_curl_request($url, $postString);
+        return json_decode($wx_auth_ret);
+    }
+
+    public static function get_3rd_userinfo($token, $openid){
         $url = 'https://api.weixin.qq.com/sns/userinfo';
         $postString = array(
             "access_token" => $token,
@@ -16,6 +26,16 @@ class Wxapi {
     }
 
     public static function get_access_token($code) {    
+        $url = 'https://api.weixin.qq.com/cgi-bin/token?';
+        $postString = array(
+            "grant_type" => "client_credential",
+            "appid" => WX_APPID,
+            "secret" => WX_SECRET);
+        $wx_auth_ret = json_decode(comm_curl_request($url, $postString));
+        return $wx_auth_ret;
+    }
+    
+    public static function get_3rd_access_token($code) {    
         $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?';
         $postString = array(
             "grant_type" => "authorization_code",
@@ -24,13 +44,6 @@ class Wxapi {
             "secret" => WX_SECRET);
         $wx_auth_ret = json_decode(comm_curl_request($url, $postString));
         return $wx_auth_ret;
-        if (empty($wx_auth_ret->error)) {
-            $_SESSION["WX_ACCESS_TOKEN"] = $wx_auth_ret->access_token;
-            $_SESSION["WX_ACCESS_TOKEN_EXPIRES_IN"] = $wx_auth_ret->expires_in + time();
-            return true;
-        }else {
-            return false;
-        }
     }
     
     public static function check_access_token() {
