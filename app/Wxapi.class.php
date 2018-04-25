@@ -7,31 +7,36 @@ class Wxapi {
     
     
     public static function check_token() {
-        $token = Setting::get_by_name("token");
-        
-        if (empty($token) || $token->expired() < time()) {
+        $token_set = Setting::get_by_name("token");
+
+        if (empty($token_set) || $token_set->expired() < time()) {
             $access_token_ret = Wxapi::get_access_token();
             \framework\Logging::l("access_token_ret", json_encode($access_token_ret));
             if (isset($access_token_ret->errcode)) {
                 return false;
             }
             
-            $token = $access_token_ret->access_token;
+            $new_token = $access_token_ret->access_token;
             $expired = $access_token_ret->expires_in + time();
             
-            $setting = new Setting();
-            $setting->setName('token');
-            $setting->setValue($token);
-            $setting->setExpired($expired);
-            $setting->setStatus(0);
-            $save = $setting->save();
+            if (empty($token_set)) {
+                $token_set = new Setting();
+            }
+            
+            $token_set->setName('token');
+            $token_set->setValue($new_token);
+            $token_set->setExpired($expired);
+            $token_set->setStatus(0);
+            $save = $token_set->save();
             
             if (empty($save)) {
                 return false;
             }
-        }else {
-            $token = $token->value();
+            
         }
+        
+        $token = $token_set->value();
+        
         return $token;
     }    
     
