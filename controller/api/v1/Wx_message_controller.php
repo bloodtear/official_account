@@ -16,7 +16,7 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
             return array('op' => 'fail', "code" => '1002002', "reason" => 'not from wx_account_server');
         }
         
-        $input = file_get_contents('php://input');
+        $input = simplexml_load_string(file_get_contents('php://input'), null, LIBXML_NOCDATA);
         \framework\Logging::l("input", json_encode($input));
         
         return '';
