@@ -21,10 +21,10 @@ class User {
                 "privilege" => ""
             );
         }
-        if (empty($summary['id'])) {
+        if (!isset($summary['id'])) {
             $summary['id'] = 0;
         }
-        if (empty($summary['status'])) {
+        if (!isset($summary['status'])) {
             $summary['status'] = 0;
         }
         $this->mSummary = $summary;
