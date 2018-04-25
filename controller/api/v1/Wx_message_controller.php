@@ -49,6 +49,7 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
             break;
         }
         
+        \framework\Logging::l("ret", json_encode($ret));
         return '';
     }
         
