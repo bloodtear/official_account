@@ -28,7 +28,7 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
                     "msgtype" => "text",
                     "text" => 
                     array(
-                        "content" => "Hello World"
+                        "content" => "WelCome!"
                     )
                 ));
                 }

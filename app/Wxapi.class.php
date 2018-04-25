@@ -32,13 +32,6 @@ class Wxapi {
         return $token;
     }    
     
-    public static function check_token() {
-        $token = Setting::get_by_name("token");
-        if (empty($token) || $token['expired'] < $time()) {
-            
-        }
-    }
-    
     public static function get_userinfo($token, $openid){
         $url = 'https://api.weixin.qq.com/cgi-bin/user/info?';
         $postString = array(
