@@ -1,0 +1,14 @@
+.body_div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.login_div {
+    height: 50%;
+    display: flex;
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+    font-size: 6rem;
+}

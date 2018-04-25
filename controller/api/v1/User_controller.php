@@ -87,12 +87,20 @@ class User_controller extends \official_account\controller\api\v1_base {
         
     }    
     //刷新session
-    public function refresh_session() { 
-       
+    public function fail() { 
+        $tpl = \framework\Tpl::instance('index/header', 'index/footer');
+        $tpl->set("errcode", "00215");
+        $tpl->set("errmsg", "保存失败");
+        $tpl->view('login/fail');
+        return false;
     }
 
 
-    public function register() {
+    public function success() {
+        $tpl = \framework\Tpl::instance('index/header', 'index/footer');
+        $tpl->view('login/success');
+        
+        return false;
     }
 
 
