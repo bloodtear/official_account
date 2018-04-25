@@ -20,23 +20,33 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
         \framework\Logging::l("input", json_encode($input));
         
         $openid = (string)($input->FromUserName);
-        $developer = (string)($input->ToUserName);
-        $time = time();
         \framework\Logging::l("input", $openid);
         switch ($input->MsgType) {
             case 'event':
                 if ($input->Event == 'subscribe') {
                     $ret = app\User::subscribe($openid);
-                    return "<xml> <ToUserName>< ![CDATA[$openid] ]></ToUserName> <FromUserName>< ![CDATA[$developer] ]></FromUserName> <CreateTime> $time </CreateTime> <MsgType>< ![CDATA[text] ]></MsgType> <Content>< ![CDATA[你好] ]></Content> </xml>";
+                    
+                    $arr = array(
+                        "touser"  => $openid,
+                        "msgtype" => "text",
+                        "text" => 
+                        array(
+                            "content" => "WelCome!"
+                        )
+                    );
+                    
+                    $json = json_decode(json_encode($arr))
+                    
+                    $ret2 = app\Customer_service::send_msg("text", $json);
                 }
             break;
             
             case 'text':
-               return "<xml> <ToUserName>< ![CDATA[$openid] ]></ToUserName> <FromUserName>< ![CDATA[$developer] ]></FromUserName> <CreateTime> $time </CreateTime> <MsgType>< ![CDATA[text] ]></MsgType> <Content>< ![CDATA[你好] ]></Content> </xml>";
+                $ret = app\Customer_service::send_msg("text", $json);
             break;
             
             default:
-                return "<xml> <ToUserName>< ![CDATA[$openid] ]></ToUserName> <FromUserName>< ![CDATA[$developer] ]></FromUserName> <CreateTime> $time </CreateTime> <MsgType>< ![CDATA[text] ]></MsgType> <Content>< ![CDATA[你好] ]></Content> </xml>";
+                $ret = app\Customer_service::send_msg("text", $json);
             break;
         }
         

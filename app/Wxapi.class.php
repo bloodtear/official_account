@@ -90,10 +90,10 @@ class Wxapi {
     }
     
             
-    public static function send_text_msg($array) {
+    public static function send_text_msg($json) {
 
         $url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?';
-        $postString = $array;
+        $postString = $json;
         $wx_auth_ret = json_decode(comm_curl_request($url, json_encode($postString)));
         return $wx_auth_ret;
     }
