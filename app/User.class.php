@@ -44,10 +44,6 @@ class User {
         return $this->mSummary["nickname"];
     }
 
-    public function status() {
-        return $this->mSummary["status"];
-    }
-
     public function sex() {
         return $this->mSummary["sex"];
     }
