@@ -4,18 +4,21 @@ use official_account\database;
 
 class User {
     private $mSummary = null;
-    private $mGroups = null;
-
+    
     public function __construct($summary = array()) {
         if (empty($summary)) {
             $summary = array(
                 "id" => 0,
-                "phone_number" => 0,
-                "email" => "",
-                "verify_code" => 0,
-                "verify_status" => 0,
+                "openid" => '',
+                "unionid" => "",
                 "status" => 0,
-                "expired" => 0,
+                "nickname" => "",
+                "sex" => 0,
+                "province" => "",
+                "city" => "",
+                "country" => "",
+                "headimgurl" => "",
+                "privilege" => ""
             );
         }
         $this->mSummary = $summary;
@@ -25,84 +28,114 @@ class User {
         return $this->mSummary["id"];
     }
 
-    public function phone_number() {
-        return $this->mSummary["phone_number"];
+    public function openid() {
+        return $this->mSummary["openid"];
     }
 
-    public function email() {
-        return $this->mSummary["email"];
-    }
-
-    public function verify_code() {
-        return $this->mSummary["verify_code"];
-    }
-
-    public function verify_status() {
-        return $this->mSummary["verify_status"];
+    public function unionid() {
+        return $this->mSummary["unionid"];
     }
 
     public function status() {
         return $this->mSummary["status"];
     }
 
-    public function expired() {
-        return $this->mSummary["expired"];
+    public function nickname() {
+        return $this->mSummary["nickname"];
     }
 
-    public function set_phone_number($n) {
-        $this->mSummary["phone_number"] = $n;
+    public function status() {
+        return $this->mSummary["status"];
     }
 
-    public function set_email($p) {
-        $this->mSummary["email"] = $p;
+    public function sex() {
+        return $this->mSummary["sex"];
     }
-
-    public function set_verify_code($n) {
-        $this->mSummary["verify_code"] = $n;
+    
+    public function province() {
+        return $this->mSummary["province"];
     }
-
-    public function set_verify_status($t) {
-        $this->mSummary["verify_status"] = $t;
+    
+    public function city() {
+        return $this->mSummary["city"];
     }
-
-    public function set_status($mail) {
-        $this->mSummary["status"] = $mail;
+    
+    public function country() {
+        return $this->mSummary["country"];
     }
-
-    public function set_expired($c) {
-        $this->mSummary["expired"] = $c;
+    
+    public function headimgurl() {
+        return $this->mSummary["headimgurl"];
+    }
+    
+    public function privilege() {
+        return $this->mSummary["privilege"];
+    }
+    
+    public function setNickname($n) {
+        $this->mSummary["nickname"] = $n;
+    }
+    
+    public function setStatus($n) {
+        $this->mSummary["status"] = $n;
+    }
+    
+    public function setSex($n) {
+        $this->mSummary["sex"] = $n;
+    }
+    
+    public function setProvince($n) {
+        $this->mSummary["province"] = $n;
+    }
+    
+    public function setCity($n) {
+        $this->mSummary["city"] = $n;
+    }
+    
+    public function setCountry($n) {
+        $this->mSummary["country"] = $n;
+    }
+    
+    public function setHeadImgUrl($n) {
+        $this->mSummary["headimgurl"] = $n;
+    }
+    
+    public function setPrivilege($n) {
+        $this->mSummary["privilege"] = $n;
     }
 
     public function save() {
         $id = $this->id();
         if ($id == 0) {
-            $id = database\Db_user::inst()->add($this->phone_number(), $this->email(), $this->verify_code(), $this->verify_status(), $this->status(), $this->expired());
+            $id = database\Db_user::inst()->add($this->openid(), $this->unionid(), $this->status(), $this->nickname(), $this->sex(), $this->province(), $this->city(), $this->country(), $this->headimgurl(), $this->privilege());
             if ($id !== false) {
                 $this->mSummary["id"] = $id;
             }
         } else {
-            $id = database\Db_user::inst()->modify($id, $this->phone_number(), $this->email(), $this->verify_code(), $this->verify_status(), $this->status(), $this->expired());
+            $id = database\Db_user::inst()->modify($id, $this->openid(), $this->unionid(), $this->status(), $this->nickname(), $this->sex(), $this->province(), $this->city(), $this->country(), $this->headimgurl(), $this->privilege());
         }
         return $id;
     }
 
-    public function packInfo($pack_all_groups = true) {
+    public function packInfo() {
 
         return array(
             "id" => $this->id(),
-            "phone_number" => $this->phone_number(), 
-            "email" => $this->email(), 
-            "verify_code" => $this->verify_code(), 
-            "verify_status" => $this->verify_status(), 
             "status" => $this->status(), 
-            "expired" => $this->expired()
+            "privilege" => $this->privilege(), 
+            "headimgurl" => $this->headimgurl(), 
+            "city" => $this->city(), 
+            "province" => $this->province(), 
+            "country" => $this->country(), 
+            "headimgurl" => $this->headimgurl(), 
+            "privilege" => $this->privilege()
         );
     }
     
-    public static function create_by_phone($phone) {
-        $data = database\Db_user::inst()->get_by_phone($phone);
+    public static function getByOpenId($openid) {
+        $data = database\Db_user::inst()->getByOpenId(openid);
         if (empty($data)) {
-            return new User();
+            return null;
         }
         return new User($data);
     }

@@ -17,9 +17,8 @@ class Db_user extends fdb\Database_table {
         parent::__construct(MYSQL_PREFIX . "user");
     }
 
-    public function get($id) {
-        $id = (int)$id;
-        return $this->get_one("id = $id");
+    public function getByOpenId($openid) {
+        return $this->get_one("openid = '$openid'");
     }
     
     public function get_by_phone($phone_number) {
@@ -30,26 +29,13 @@ class Db_user extends fdb\Database_table {
     public function all() {
         return $this->get_all();
     }
-/**
-{
-            "id" => $this->id(),
-            "phone_number" => $this->phone_number(), 
-            "email" => $this->email(), 
-            "verify_code" => $this->verify_code(), 
-            "verify_status" => $this->verify_status(), 
-            "status" => $this->status(), 
-            "expired" => $this->expired()
 
-}
-*/
-    public function add($phone_number, $email, $verify_code, $verify_status, $status, $expired) {
-        //$phone_number = (int)$phone_number;
-        return $this->insert(array("phone_number" => $phone_number, "email" => $email, "expired"=> $expired, "verify_code" => $verify_code, "verify_status" => $verify_status, "status" => $status));
+    public function add($openid, $unionid, $status, $nickname, $sex, $province, $city, $country, $headimgurl, $privilege) {
+        return $this->insert(array("openid" => $openid, "unionid" => $unionid, "status"=> $status, "nickname" => $nickname, "sex" => $sex, "province" => $province, "city" => $city, "country" => $country, "headimgurl" => $headimgurl, "privilege" => $privilege));
     }
 
-    public function modify($id, $phone_number, $email, $verify_code, $verify_status, $status, $expired) {
-        //$phone_number = (int)$phone_number;
-        return $this->update(array("phone_number" => $phone_number, "email" => $email, "expired"=> $expired, "verify_code" => $verify_code, "verify_status" => $verify_status, "status" => $status), "id = $id");
+    public function modify($id, $openid, $unionid, $status, $nickname, $sex, $province, $city, $country, $headimgurl, $privilege) {
+        return $this->update(array("openid" => $openid, "unionid" => $unionid, "status"=> $status, "nickname" => $nickname, "sex" => $sex, "province" => $province, "city" => $city, "country" => $country, "headimgurl" => $headimgurl, "privilege" => $privilege), "id = $id");
     }
 	
     public function remove($id) {
