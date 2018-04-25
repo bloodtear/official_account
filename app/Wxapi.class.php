@@ -92,7 +92,8 @@ class Wxapi {
             
     public static function send_text_msg($json) {
         $token = self::check_token();
-        $url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=$token';
+        
+        $url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' . $token;
         $postString = $json;
         $wx_auth_ret = json_decode(comm_curl_request($url, json_encode($postString)));
         return $wx_auth_ret;
