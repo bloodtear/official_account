@@ -144,7 +144,7 @@ class User {
         }
         
         $token = $access_token_ret->access_token;
-        $openid = $access_token_ret->openid;
+
         
         $userinfo = Wxapi::get_userinfo($token, $openid);
         \framework\Logging::l("userinfo", json_encode($userinfo));
