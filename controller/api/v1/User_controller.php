@@ -53,13 +53,13 @@ class User_controller extends \official_account\controller\api\v1_base {
             $user = new app\User($userinfo);
         }
         
-        $user->setNickName($userinfo->nickname);
-        $user->setSex($userinfo->sex);
-        $user->setProvince($userinfo->province);
-        $user->setCity($userinfo->city);
-        $user->setCountry($userinfo->country);
-        $user->setHeadImgUrl($userinfo->headimgurl);
-        $user->setPrivilege($userinfo->privilege);
+        $user->setNickName($userinfo['nickname']);
+        $user->setSex($userinfo['sex']);
+        $user->setProvince($userinfo['province']);
+        $user->setCity($userinfo['city']);
+        $user->setCountry($userinfo['country']);
+        $user->setHeadImgUrl($userinfo['headimgurl']);
+        $user->setPrivilege($userinfo['privilege']);
         
         $save = $user->save();
         
