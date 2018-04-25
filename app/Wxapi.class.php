@@ -9,7 +9,7 @@ class Wxapi {
     public static function check_token() {
         $token = Setting::get_by_name("token");
         
-        if (empty($token) || $token->expired() < $time()) {
+        if (empty($token) || $token->expired() < time()) {
             $access_token_ret = Wxapi::get_access_token();
             \framework\Logging::l("access_token_ret", json_encode($access_token_ret));
             if (isset($access_token_ret->errcode)) {
