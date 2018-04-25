@@ -20,42 +20,23 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
         \framework\Logging::l("input", json_encode($input));
         
         $openid = (string)($input->FromUserName);
+        $developer = (string)($input->ToUserName);
+        $time = time();
         \framework\Logging::l("input", $openid);
         switch ($input->MsgType) {
             case 'event':
                 if ($input->Event == 'subscribe') {
                     $ret = app\User::subscribe($openid);
-                    $ret2 = app\Customer_service::send_msg("text", array(
-                        "touser"  => $openid,
-                        "msgtype" => "text",
-                        "text" => 
-                        array(
-                            "content" => "WelCome!"
-                        )
-                    ));
+                    return "<xml> <ToUserName>< ![CDATA[$openid] ]></ToUserName> <FromUserName>< ![CDATA[$developer] ]></FromUserName> <CreateTime> $time </CreateTime> <MsgType>< ![CDATA[text] ]></MsgType> <Content>< ![CDATA[你好] ]></Content> </xml>";
                 }
             break;
             
             case 'text':
-                $ret = app\Customer_service::send_msg("text", array(
-                    "touser"  => $openid,
-                    "msgtype" => "text",
-                    "text" => 
-                    array(
-                        "content" => "WelCome! text"
-                    )
-                ));
+               return "<xml> <ToUserName>< ![CDATA[$openid] ]></ToUserName> <FromUserName>< ![CDATA[$developer] ]></FromUserName> <CreateTime> $time </CreateTime> <MsgType>< ![CDATA[text] ]></MsgType> <Content>< ![CDATA[你好] ]></Content> </xml>";
             break;
             
             default:
-                $ret = app\Customer_service::send_msg("text", array(
-                    "touser"  => $openid,
-                    "msgtype" => "text",
-                    "text" => 
-                    array(
-                        "content" => "Hello World"
-                    )
-                ));
+                return "<xml> <ToUserName>< ![CDATA[$openid] ]></ToUserName> <FromUserName>< ![CDATA[$developer] ]></FromUserName> <CreateTime> $time </CreateTime> <MsgType>< ![CDATA[text] ]></MsgType> <Content>< ![CDATA[你好] ]></Content> </xml>";
             break;
         }
         
