@@ -2,7 +2,7 @@
 namespace official_account\app;
 use official_account\database;
 
-class Message {
+class Wx_message {
     private $mSummary = null;
 
     public function __construct($summary = array()) {
@@ -46,11 +46,24 @@ class Message {
             "name" => $this->name(), 
         );
     }
+    
+    
+    public static function check_sign() {
+        
+        $signature  = get_request("signature");
+        $timestamp  = get_request("timestamp");
+        $nonce      = get_request("nonce");
+        $token      = WX_ACCOUNT_SERVER_TOKEN;
+        
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
 
-    public static function get_broadcast_data() {
-        $summary = database\Db_message::inst()->get_broadcast_data();
-        return $summary;
+        return $tmpStr == $signature;
     }
+
+
 
 };
 

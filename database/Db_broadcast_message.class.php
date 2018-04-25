@@ -2,14 +2,14 @@
 namespace official_account\database;
 use framework\Database as fdb;
 
-class Db_message extends fdb\Database_table {
+class Db_broadcast_message extends fdb\Database_table {
     const STATUS_NORMAL = 0;
     const STATUS_DELETED = 1;
 
     private static $instance = null;
     public static function inst() {
         if (self::$instance == null)
-            self::$instance = new Db_message();
+            self::$instance = new Db_broadcast_message();
         return self::$instance;
     }
 
