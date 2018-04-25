@@ -31,11 +31,11 @@ class Db_user extends fdb\Database_table {
     }
 
     public function add($openid, $unionid, $status, $nickname, $sex, $province, $city, $country, $headimgurl, $privilege) {
-        return $this->insert(array("openid" => $openid, "unionid" => $unionid, "status"=> $status, "nickname" => $nickname, "sex" => $sex, "province" => $province, "city" => $city, "country" => $country, "headimgurl" => $headimgurl, "privilege" => $privilege));
+        return $this->insert(array("openid" => $openid, "unionid" => $unionid, "status"=> $status, "nickname" => $nickname, "sex" => $sex, "province" => $province, "city" => $city, "country" => $country, "headimgurl" => $headimgurl, "privilege" => $privilege, "last_login" => time()));
     }
 
     public function modify($id, $openid, $unionid, $status, $nickname, $sex, $province, $city, $country, $headimgurl, $privilege) {
-        return $this->update(array("openid" => $openid, "unionid" => $unionid, "status"=> $status, "nickname" => $nickname, "sex" => $sex, "province" => $province, "city" => $city, "country" => $country, "headimgurl" => $headimgurl, "privilege" => $privilege), "id = $id");
+        return $this->update(array("openid" => $openid, "unionid" => $unionid, "status"=> $status, "nickname" => $nickname, "sex" => $sex, "province" => $province, "city" => $city, "country" => $country, "headimgurl" => $headimgurl, "privilege" => $privilege, "last_login" => time()), "id = $id");
     }
 	
     public function remove($id) {
