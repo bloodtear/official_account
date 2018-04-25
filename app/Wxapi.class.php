@@ -5,6 +5,40 @@ use official_account\database;
 // 小程序和公众号的Oauth流程类似，但是参数不一样
 class Wxapi {
     
+    
+    public static function check_token() {
+        $token = Setting::get_by_name("token");
+        if (empty($token) || $token['expired'] < $time()) {
+            $access_token_ret = Wxapi::get_access_token();
+            \framework\Logging::l("access_token_ret", json_encode($access_token_ret));
+            if (isset($access_token_ret->errcode)) {
+                return false;
+            }
+            
+            $token = $access_token_ret->access_token;
+            $expired = $access_token_ret->expires_in + time();
+            
+            $setting = new Setting();
+            $setting->setName('token');
+            $setting->setValue($token);
+            $setting->setExpired($expired);
+            $setting->setStatus(0);
+            $save = $setting->save();
+            
+            if (empty($save)) {
+                return false;
+            }
+        }
+        return $token;
+    }    
+    
+    public static function check_token() {
+        $token = Setting::get_by_name("token");
+        if (empty($token) || $token['expired'] < $time()) {
+            
+        }
+    }
+    
     public static function get_userinfo($token, $openid){
         $url = 'https://api.weixin.qq.com/cgi-bin/user/info?';
         $postString = array(
@@ -52,6 +86,15 @@ class Wxapi {
         if (empty($wx_acess_token) || empty($wx_acess_token_expires_in) || time() > $wx_acess_token_expires_in) {
             Wxapi::get_access_token();
         }
+    }
+    
+            
+    public static function send_text_msg($array) {
+
+        $url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?';
+        $postString = $array;
+        $wx_auth_ret = json_decode(comm_curl_request($url, json_encode($postString)));
+        return $wx_auth_ret;
     }
     
         

@@ -136,14 +136,11 @@ class User {
     
     public static function subscribe($openid) {
         
-        
-        $access_token_ret = Wxapi::get_access_token();
-        \framework\Logging::l("access_token_ret", json_encode($access_token_ret));
-        if (isset($access_token_ret->errcode)) {
+        $token = Wxapi::check_token();
+        if (empty($token)) {
             return false;
         }
-        
-        $token = $access_token_ret->access_token;
+
         $openid = $access_token_ret->openid;
         
         $userinfo = Wxapi::get_userinfo($token, $openid);
