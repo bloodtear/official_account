@@ -129,7 +129,7 @@ class User {
     }
     
     public static function getByOpenId($openid) {
-        $data = database\Db_user::inst()->getByOpenId(openid);
+        $data = database\Db_user::inst()->getByOpenId($openid);
         if (empty($data)) {
             return null;
         }

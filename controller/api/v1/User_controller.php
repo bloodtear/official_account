@@ -46,10 +46,10 @@ class User_controller extends \official_account\controller\api\v1_base {
         }
         
         $userinfo = json_decode(json_encode($userinfo), true);
-        $openid = $userinfo->openid;
+        $openid = $userinfo['openid'];
         
         $user = app\User::getByOpenId($openid);
-        if ($empty($user)) {
+        if (empty($user)) {
             $user = new app\User($userinfo);
         }
         
