@@ -160,7 +160,7 @@ class User {
         $user->setCity($userinfo['city']);
         $user->setCountry($userinfo['country']);
         $user->setHeadImgUrl($userinfo['headimgurl']);
-        $user->setPrivilege($userinfo['privilege']);
+        $user->setPrivilege($userinfo['privilege'] ?? '');
         
         $save = $user->save();
         return $save;

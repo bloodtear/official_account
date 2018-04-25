@@ -11,7 +11,7 @@ class Customer_service {
             break;
             
             default:
-            
+                $ret = Wxapi::send_text_msg($array);
             break;
         }
         return $ret;

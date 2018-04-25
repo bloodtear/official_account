@@ -24,13 +24,13 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
                 if ($input->Event == 'subscribe') {
                     $ret = app\User::subscribe($input->FromUserName);
                     $ret2 = app\Customer_service::send_msg("text", array(
-                    "touser"  => $input->FromUserName,
-                    "msgtype" => "text",
-                    "text" => 
-                    array(
-                        "content" => "WelCome!"
-                    )
-                ));
+                        "touser"  => $input->FromUserName,
+                        "msgtype" => "text",
+                        "text" => 
+                        array(
+                            "content" => "WelCome!"
+                        )
+                    ));
                 }
             break;
             
