@@ -32,8 +32,13 @@ class User_controller extends \official_account\controller\api\v1_base {
         
         $access_token_ret = app\Wxapi::get_access_token($code);
         \framework\Logging::l("access_token_ret", json_encode($access_token_ret));
-        if (isset($access_token_ret->error)) {
-            return $access_token_ret->error;
+        if (isset($access_token_ret->errcode)) {
+            //return json_encode($access_token_ret);
+            $tpl = \framework\Tpl::instance('index/header', 'index/footer');
+            $tpl->set("errcode", $access_token_ret->errcode);
+            $tpl->set("errmsg", $access_token_ret->errmsg);
+            $tpl->view('login/fail');
+            return false;
         }
         
         $token = $access_token_ret->access_token;
@@ -42,7 +47,11 @@ class User_controller extends \official_account\controller\api\v1_base {
         $userinfo = app\Wxapi::get_userinfo($token, $openid);
         \framework\Logging::l("userinfo", json_encode($userinfo));
         if (isset($userinfo->errcode)) {
-            return json_encode($userinfo);
+            $tpl = \framework\Tpl::instance('index/header', 'index/footer');
+            $tpl->set("errcode", $access_token_ret->errcode);
+            $tpl->set("errmsg", $access_token_ret->errmsg);
+            $tpl->view('login/fail');
+            return false;
         }
         
         $userinfo = json_decode(json_encode($userinfo), true);
@@ -63,7 +72,18 @@ class User_controller extends \official_account\controller\api\v1_base {
         
         $save = $user->save();
         
-        return $save ? "登录成功" : "登录失败";
+        if (empty($save)) {
+            $tpl = \framework\Tpl::instance('index/header', 'index/footer');
+            $tpl->set("errcode", "00215");
+            $tpl->set("errmsg", "保存失败");
+            $tpl->view('login/fail');
+            return false;
+        }
+        
+        $tpl = \framework\Tpl::instance('index/header', 'index/footer');
+        $tpl->view('login/success');
+        
+        return false;
         
     }    
     //刷新session
