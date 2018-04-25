@@ -19,10 +19,12 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
         $input = simplexml_load_string(file_get_contents('php://input'), null, LIBXML_NOCDATA);
         \framework\Logging::l("input", json_encode($input));
         
+        $openid = $input->FromUserName;
+        
         switch ($input->MsgType) {
             case 'event':
                 if ($input->Event == 'subscribe') {
-                    $ret = app\User::subscribe($input->FromUserName);
+                    $ret = app\User::subscribe($openid);
                     $ret2 = app\Customer_service::send_msg("text", array(
                         "touser"  => $input->FromUserName,
                         "msgtype" => "text",
@@ -36,19 +38,18 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
             
             case 'text':
                 $ret = app\Customer_service::send_msg("text", array(
-                    "touser"  => $input->FromUserName,
+                    "touser"  => $openid,
                     "msgtype" => "text",
                     "text" => 
                     array(
                         "content" => "WelCome! text"
                     )
                 ));
-                
             break;
             
             default:
                 $ret = app\Customer_service::send_msg("text", array(
-                    "touser"  => $input->FromUserName,
+                    "touser"  => $openid,
                     "msgtype" => "text",
                     "text" => 
                     array(
