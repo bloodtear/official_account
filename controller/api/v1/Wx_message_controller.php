@@ -34,6 +34,18 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
                 }
             break;
             
+            case 'text':
+                $ret = app\Customer_service::send_msg("text", array(
+                    "touser"  => $input->FromUserName,
+                    "msgtype" => "text",
+                    "text" => 
+                    array(
+                        "content" => "WelCome! text"
+                    )
+                ));
+                
+            break;
+            
             default:
                 $ret = app\Customer_service::send_msg("text", array(
                     "touser"  => $input->FromUserName,
