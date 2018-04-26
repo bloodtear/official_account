@@ -101,7 +101,7 @@ class User {
         $user->setAttr('openid', $userinfo['openid']);
         $user->setAttr('unionid', $userinfo['unionid']);
         $user->setAttr('status', 0);
-        $user->setAttr('last_login', $userinfo['last_login']);
+        $user->setAttr('last_login', time());
         $user->setAttr('language', $userinfo['language']);
         $user->setAttr('nickname', $userinfo['nickname']);
         $user->setAttr('sex', $userinfo['sex']);
