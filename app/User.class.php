@@ -100,7 +100,7 @@ class User {
         
         $user->setAttr('openid', $userinfo['openid']);
         $user->setAttr('unionid', $userinfo['unionid']);
-        $user->setAttr('status', $userinfo['status']);
+        $user->setAttr('status', 0);
         $user->setAttr('last_login', $userinfo['last_login']);
         $user->setAttr('language', $userinfo['language']);
         $user->setAttr('nickname', $userinfo['nickname']);
@@ -130,14 +130,7 @@ class User {
         }
         return new User($data);
     }
-    
-    public static function get_by_phone($phone) {
-        $data = database\Db_user::inst()->get_by_phone($phone);
-        if (empty($data)) {
-            return false;
-        }
-        return new User($data);
-    }
+
     
     public function check_verify($verify_code) {
         \framework\Logging::l('expired',$this->expired());
