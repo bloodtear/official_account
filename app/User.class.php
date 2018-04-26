@@ -54,6 +54,14 @@ class User {
     public function save() {
         $id = $this->getAttr('id');
         $attrList = $this->mSummary;
+        
+        foreach ($attrList as $k => $v) {
+            $type = gettype($v);
+            if ($type == 'array' || $type == 'object') {
+                $attrList[$k] = json_encode($v);
+            }
+        }
+        
         \framework\Logging::d("attrList", json_encode($attrList));
         unset($attrList['id']);
         if ($id == 0) {
