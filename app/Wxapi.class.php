@@ -95,7 +95,7 @@ class Wxapi {
         
         $url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' . $token;
         $postString = $json;
-        $wx_auth_ret = json_decode(comm_curl_request($url, json_encode($postString)));
+        $wx_auth_ret = json_decode(comm_curl_request($url, json_encode($postString, JSON_UNESCAPED_UNICODE)));
         return $wx_auth_ret;
     }
     
