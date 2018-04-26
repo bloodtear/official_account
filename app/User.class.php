@@ -48,7 +48,7 @@ class User {
     }
     
     public function setAttr($name, $value){
-        isset($this->summary[$name]) $this->summary[$name] = $value ? false;
+        array_key_exists($name, $this->summary); ? $this->summary[$name] = $value : false;
     }
 
     public function save() {
