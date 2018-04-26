@@ -35,7 +35,7 @@ class Db_user extends fdb\Database_table {
     }
 
     public function modify($id, $attrList) {
-        return $this->update(array($attrList), "id = $id");
+        return $this->update($attrList, "id = $id");
     }
 	
     public function remove($id) {
