@@ -4,23 +4,7 @@ use official_account\database;
 
 class User {
     private $mSummary = null;
-    "subscribe": 1, 
-    "openid": "ojLZa0p1pmN5Nk6wm1keSnMSPXl0", 
-    "nickname": "xy", 
-    "sex": 1, 
-    "language": "zh_CN", 
-    "city": "丰台", 
-    "province": "北京", 
-    "country": "中国", 
-    "headimgurl": "http://thirdwx.qlogo.cn/mmopen/3yl1Kk2CdeVbfCc1csnynHLWHru0BFiblrciaoyblx5txFdQG3CtjjUj4ERia3ficW0tnN9m3uPEqnlNJqOTZRkibNJgO3c0acjFS/132", 
-    "subscribe_time": 1524707480, 
-    "unionid": "oKm4t1dqfMBo4mEFn2AoRLc2V8fI", 
-    "remark": "", 
-    "groupid": 0, 
-    "tagid_list": [ ], 
-    "subscribe_scene": "ADD_SCENE_SEARCH", 
-    "qr_scene": 0, 
-    "qr_scene_str": ""
+
     public function __construct($summary = array()) {
         if (empty($summary)) {
             $summary = array(

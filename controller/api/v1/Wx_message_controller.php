@@ -39,20 +39,19 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
                     \framework\Logging::l("user", json_encode($user->packInfo()));
                     
                     $send = app\Customer_service::send_msg("text", $json);
-                    \framework\Logging::l("send", json_encode($send));
                 }
             break;
             
             case 'text':
-                $ret = app\Customer_service::send_msg("text", $json);
+                $send = app\Customer_service::send_msg("text", $json);
             break;
             
             default:
-                $ret = app\Customer_service::send_msg("text", $json);
+                $send = app\Customer_service::send_msg("text", $json);
             break;
         }
         
-        \framework\Logging::l("ret", json_encode($ret));
+        \framework\Logging::l("send", json_encode($send));
         return '';
     }
         
