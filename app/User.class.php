@@ -131,6 +131,18 @@ class User {
         
     }
     
+    public static function unsubscribe($openid) {
+
+        $user = User::getByOpenId($openid);
+
+        $user->setAttr('last_login', time());
+        $user->setAttr('subscribe', 0);
+        
+        $save = $user->save();
+        return $save ? $user : false;
+        
+    }
+    
     public static function getByOpenId($openid) {
         $data = database\Db_user::inst()->getByOpenId($openid);
         if (empty($data)) {

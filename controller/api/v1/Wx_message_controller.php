@@ -22,32 +22,18 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
         $openid = (string)($input->FromUserName);
         \framework\Logging::l("input", $openid);
         
-        $arr = array(
-            "touser"  => $openid,
-            "msgtype" => "text",
-            "text" => 
-            array(
-                "content" => "WelCome!"
-            )
-        );
-        $json = json_decode(json_encode($arr));
-        
         switch ($input->MsgType) {
             case 'event':
                 if ($input->Event == 'subscribe') {
                     $user = app\User::subscribe($openid);
-                    \framework\Logging::l("user", json_encode($user->packInfo()));
-                    
-                    $send = app\Customer_service::send_msg("text", $json);
+                    $send = app\Customer_service::welcomeMsg($openid);
+                }
+                if ($input->Event == 'unsubscribe') {
+                    $user = app\User::unsubscribe($openid);
                 }
             break;
-            
-            case 'text':
-                $send = app\Customer_service::send_msg("text", $json);
-            break;
-            
             default:
-                $send = app\Customer_service::send_msg("text", $json);
+                $send = app\Customer_service::autoReply($openid);
             break;
         }
         
