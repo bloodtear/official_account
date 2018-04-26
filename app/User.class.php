@@ -4,7 +4,23 @@ use official_account\database;
 
 class User {
     private $mSummary = null;
-    
+    "subscribe": 1, 
+    "openid": "ojLZa0p1pmN5Nk6wm1keSnMSPXl0", 
+    "nickname": "xy", 
+    "sex": 1, 
+    "language": "zh_CN", 
+    "city": "丰台", 
+    "province": "北京", 
+    "country": "中国", 
+    "headimgurl": "http://thirdwx.qlogo.cn/mmopen/3yl1Kk2CdeVbfCc1csnynHLWHru0BFiblrciaoyblx5txFdQG3CtjjUj4ERia3ficW0tnN9m3uPEqnlNJqOTZRkibNJgO3c0acjFS/132", 
+    "subscribe_time": 1524707480, 
+    "unionid": "oKm4t1dqfMBo4mEFn2AoRLc2V8fI", 
+    "remark": "", 
+    "groupid": 0, 
+    "tagid_list": [ ], 
+    "subscribe_scene": "ADD_SCENE_SEARCH", 
+    "qr_scene": 0, 
+    "qr_scene_str": ""
     public function __construct($summary = array()) {
         if (empty($summary)) {
             $summary = array(
@@ -12,13 +28,22 @@ class User {
                 "openid" => '',
                 "unionid" => "",
                 "status" => 0,
+                "last_login" => 0,
                 "nickname" => "",
                 "sex" => 0,
                 "province" => "",
                 "city" => "",
+                "language" => "", 
                 "country" => "",
                 "headimgurl" => "",
-                "privilege" => ""
+                "subscribe" => 0,
+                "subscribe_time" => 0,
+                "remark" => "",
+                "groupid" => 0,
+                "tagid_list" => "",
+                "subscribe_scene" => "",
+                "qr_scene" => "",
+                "qr_scene_str" => ""
             );
         }
         if (!isset($summary['id'])) {
@@ -27,111 +52,46 @@ class User {
         if (!isset($summary['status'])) {
             $summary['status'] = 0;
         }
+        if (!isset($summary['last_login'])) {
+            $summary['last_login'] = time();
+        }
         $this->mSummary = $summary;
     }
-
-    public function id() {
-        return $this->mSummary["id"];
-    }
-
-    public function openid() {
-        return $this->mSummary["openid"];
-    }
-
-    public function unionid() {
-        return $this->mSummary["unionid"];
-    }
-
-    public function status() {
-        return $this->mSummary["status"];
-    }
-
-    public function nickname() {
-        return $this->mSummary["nickname"];
-    }
-
-    public function sex() {
-        return $this->mSummary["sex"];
+    
+    
+    public function getAttr($name){
+        return $this->summary[$name] ?? null;
     }
     
-    public function province() {
-        return $this->mSummary["province"];
-    }
-    
-    public function city() {
-        return $this->mSummary["city"];
-    }
-    
-    public function country() {
-        return $this->mSummary["country"];
-    }
-    
-    public function headimgurl() {
-        return $this->mSummary["headimgurl"];
-    }
-    
-    public function privilege() {
-        return $this->mSummary["privilege"];
-    }
-    
-    public function setNickname($n) {
-        $this->mSummary["nickname"] = $n;
-    }
-    
-    public function setStatus($n) {
-        $this->mSummary["status"] = $n;
-    }
-    
-    public function setSex($n) {
-        $this->mSummary["sex"] = $n;
-    }
-    
-    public function setProvince($n) {
-        $this->mSummary["province"] = $n;
-    }
-    
-    public function setCity($n) {
-        $this->mSummary["city"] = $n;
-    }
-    
-    public function setCountry($n) {
-        $this->mSummary["country"] = $n;
-    }
-    
-    public function setHeadImgUrl($n) {
-        $this->mSummary["headimgurl"] = $n;
-    }
-    
-    public function setPrivilege($n) {
-        $this->mSummary["privilege"] = $n;
+    public function setAttr($name, $value){
+        isset($this->summary[$name]) $this->summary[$name] = $value ? false;
     }
 
     public function save() {
-        $id = $this->id();
+        $id = $this->getAttr('id');
+        $attrList = $this->summary;
+        \framework\Logging::d("attrList", json_encode($attrList));
+        unset($attrList['id']);
         if ($id == 0) {
-            $id = database\Db_user::inst()->add($this->openid(), $this->unionid(), $this->status(), $this->nickname(), $this->sex(), $this->province(), $this->city(), $this->country(), $this->headimgurl(), json_encode($this->privilege()));
+            $id = database\Db_user::inst()->add($attrList);
             if ($id !== false) {
                 $this->mSummary["id"] = $id;
             }
         } else {
-            $id = database\Db_user::inst()->modify($id, $this->openid(), $this->unionid(), $this->status(), $this->nickname(), $this->sex(), $this->province(), $this->city(), $this->country(), $this->headimgurl(), json_encode($this->privilege()));
+            $id = database\Db_user::inst()->modify($id, $attrList);
         }
         return $id;
     }
 
     public function packInfo() {
-
-        return array(
-            "id" => $this->id(),
-            "status" => $this->status(), 
-            "privilege" => $this->privilege(), 
-            "headimgurl" => $this->headimgurl(), 
-            "city" => $this->city(), 
-            "province" => $this->province(), 
-            "country" => $this->country(), 
-            "headimgurl" => $this->headimgurl(), 
-            "privilege" => $this->privilege()
-        );
+        $black_list = array("unionid", "openid");
+        $packInfo = $this->summary;
+        
+        foreach ($black_list as $black) {
+            isset($packInfo[$black]) ? unset($packInfo[$black]) : '';
+        }
+        
+        return $packInfo;
     }
     
     public static function subscribe($openid) {
@@ -154,16 +114,28 @@ class User {
             $user = new User($userinfo);
         }
         
-        $user->setNickName($userinfo['nickname']);
-        $user->setSex($userinfo['sex']);
-        $user->setProvince($userinfo['province']);
-        $user->setCity($userinfo['city']);
-        $user->setCountry($userinfo['country']);
-        $user->setHeadImgUrl($userinfo['headimgurl']);
-        $user->setPrivilege($userinfo['privilege'] ?? '');
+        $user->setAttr('openid', $userinfo['openid']);
+        $user->setAttr('unionid', $userinfo['unionid']);
+        $user->setAttr('status', $userinfo['status']);
+        $user->setAttr('last_login', $userinfo['last_login']);
+        $user->setAttr('language', $userinfo['language']);
+        $user->setAttr('nickname', $userinfo['nickname']);
+        $user->setAttr('sex', $userinfo['sex']);
+        $user->setAttr('province', $userinfo['province']);
+        $user->setAttr('city', $userinfo['city']);
+        $user->setAttr('country', $userinfo['country']);
+        $user->setAttr('headimgurl', $userinfo['headimgurl']);
+        $user->setAttr('subscribe', $userinfo['subscribe']);
+        $user->setAttr('subscribe_time', $userinfo['subscribe_time']);
+        $user->setAttr('remark', $userinfo['remark']);
+        $user->setAttr('groupid', $userinfo['groupid']);
+        $user->setAttr('tagid_list', $userinfo['tagid_list']);
+        $user->setAttr('subscribe_scene', $userinfo['subscribe_scene']);
+        $user->setAttr('qr_scene', $userinfo['qr_scene']);
+        $user->setAttr('qr_scene_str', $userinfo['qr_scene_str']);
         
         $save = $user->save();
-        return $save;
+        return $save ? $user : false;
         
     }
     

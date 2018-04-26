@@ -35,8 +35,11 @@ class Wx_message_controller extends \official_account\controller\api\v1_base {
         switch ($input->MsgType) {
             case 'event':
                 if ($input->Event == 'subscribe') {
-                    $ret = app\User::subscribe($openid);
-                    $ret2 = app\Customer_service::send_msg("text", $json);
+                    $user = app\User::subscribe($openid);
+                    \framework\Logging::l("user", json_encode($user->packInfo()));
+                    
+                    $send = app\Customer_service::send_msg("text", $json);
+                    \framework\Logging::l("send", json_encode($send));
                 }
             break;
             
