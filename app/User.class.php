@@ -44,16 +44,16 @@ class User {
     
     
     public function getAttr($name){
-        return $this->summary[$name] ?? null;
+        return $this->mSummary[$name] ?? null;
     }
     
     public function setAttr($name, $value){
-        array_key_exists($name, $this->summary); ? $this->summary[$name] = $value : false;
+        array_key_exists($name, $this->mSummary) ? $this->mSummary[$name] = $value : false;
     }
 
     public function save() {
         $id = $this->getAttr('id');
-        $attrList = $this->summary;
+        $attrList = $this->mSummary;
         \framework\Logging::d("attrList", json_encode($attrList));
         unset($attrList['id']);
         if ($id == 0) {
@@ -69,10 +69,10 @@ class User {
 
     public function packInfo() {
         $black_list = array("unionid", "openid");
-        $packInfo = $this->summary;
+        $packInfo = $this->mSummary;
         
         foreach ($black_list as $black) {
-            isset($packInfo[$black]) ? unset($packInfo[$black]) : '';
+            //array_key_exists($black, $packInfo) ? unset($packInfo[$black]) : '';
         }
         
         return $packInfo;

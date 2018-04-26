@@ -31,7 +31,7 @@ class Db_user extends fdb\Database_table {
     }
 
     public function add($attrList) {
-        return $this->insert($attrList));
+        return $this->insert($attrList);
     }
 
     public function modify($id, $attrList) {
