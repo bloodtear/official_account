@@ -25,7 +25,7 @@ class Customer_service {
             "msgtype" => "text",
             "text" => 
             array(
-                "content" => "WelCome!"
+                "content" => $content
             )
         );
         return json_decode(json_encode($arr));
