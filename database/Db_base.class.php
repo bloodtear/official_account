@@ -14,7 +14,7 @@ class Db_base extends fdb\Database {
     public function __construct($db = DB_DBNAME) {
         $this->dbname = $db;
         try {
-            parent::instance();
+            parent::instance($db);
         } catch (PDOException $e) {
             logging::e("PDO.Exception", $e, false);
             die($e);
